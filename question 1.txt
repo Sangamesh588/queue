@@ -1,0 +1,53 @@
+//question 1
+#include <stdio.h>
+
+// Date structure to be used
+struct Date {
+    int day;
+    int month;
+    int year;
+};
+
+// Holder details structure
+struct Holder {
+    char name[100];
+    struct Date date_of_birth;
+    char address[200];
+    char nationality[50];
+};
+
+// Main Passport structure
+struct Passport {
+    char passport_number[20];
+    struct Holder holder_details;
+    struct Date issue_date;
+    struct Date expiry_date;
+    char issuing_country[50];
+};
+
+int main() {
+    // Example of creating and initializing a Passport
+    struct Passport p1 = {
+        "M1234567",
+        {
+            "John Doe",
+            {15, 6, 1990}, // Date of birth
+            "123 Main St, Anytown, USA",
+            "American"
+        },
+        {1, 1, 2020}, // Issue date
+        {31, 12, 2029}, // Expiry date
+        "USA"
+    };
+
+    printf("Passport Number: %s\n", p1.passport_number);
+    printf("Holder Name: %s\n", p1.holder_details.name);
+    printf("Holder DOB: %d/%d/%d\n", p1.holder_details.date_of_birth.day,
+                                     p1.holder_details.date_of_birth.month,
+                                     p1.holder_details.date_of_birth.year);
+    printf("Issue Date: %d/%d/%d\n", p1.issue_date.day,
+                                     p1.issue_date.month,
+                                     p1.issue_date.year);
+
+    return 0;
+}

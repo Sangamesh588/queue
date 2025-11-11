@@ -1,0 +1,96 @@
+//question 3c.(ii)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_SIZE 100
+
+char stack[MAX_SIZE];
+int top = -1;
+
+void push(char item) {
+    if (top >= MAX_SIZE - 1) {
+        printf("Stack Overflow.\n");
+        return;
+    }
+    stack[++top] = item;
+}
+
+char pop() {
+    if (top < 0) {
+        printf("Stack Underflow.\n");
+        return -1;
+    }
+    return stack[top--];
+}
+
+char peek() {
+    if (top < 0) {
+        return -1;
+    }
+    return stack[top];
+}
+
+// Function to determine operator precedence
+int precedence(char op) {
+    switch (op) {
+        case '^':
+            return 3;
+        case '*':
+        case '/':
+            return 2;
+        case '+':
+        case '-':
+            return 1;
+        default:
+            return -1; // For '('
+    }
+}
+
+// Function to convert infix to postfix
+void infixToPostfix(char* infix, char* postfix) {
+    int i = 0, j = 0;
+    char item, x;
+
+    push('('); // Push '(' onto stack
+    strcat(infix, ")"); // Add ')' to the end of infix
+
+    while (infix[i] != '\0') {
+        item = infix[i];
+
+        if (item == '(') {
+            push(item);
+        } else if (isalnum(item)) {
+            postfix[j++] = item; // Add operand to postfix
+        } else if (item == ')') {
+            while ((x = pop()) != '(') {
+                postfix[j++] = x;
+            }
+        } else { // Operator
+            // Handle precedence
+            // Note: '^' is right-associative, others are left-associative
+            while (precedence(peek()) >= precedence(item)) {
+                 if (item == '^' && peek() == '^')
+                    break; // For right-associativity of ^
+                 postfix[j++] = pop();
+            }
+            push(item);
+        }
+        i++;
+    }
+    postfix[j] = '\0'; // Null-terminate the postfix string
+}
+
+int main() {
+    // The expression from the question paper
+    char infix[MAX_SIZE] = "(A-B/(C*D^E))^(F*G)";
+    char postfix[MAX_SIZE];
+
+    infixToPostfix(infix, postfix);
+
+    printf("Infix Expression: %s\n", infix);
+    printf("Postfix Expression: %s\n", postfix); // Output: ABCDE^* / -FG*^
+
+    return 0;
+}

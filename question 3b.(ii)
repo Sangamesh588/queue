@@ -1,0 +1,39 @@
+//question 3b.(ii)
+#include <stdio.h>
+
+// Recursive binary search for a descending sorted array
+int binarySearchDescending(int arr[], int low, int high, int key) {
+    if (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == key) {
+            return mid; // Key found
+        }
+
+        // If key is greater, it must be in the left subarray
+        if (arr[mid] < key) {
+            return binarySearchDescending(arr, low, mid - 1, key);
+        }
+        
+        // If key is smaller, it must be in the right subarray
+        return binarySearchDescending(arr, mid + 1, high, key);
+    }
+    
+    return -1; // Key not found
+}
+
+int main() {
+    int arr[] = {100, 90, 85, 70, 55, 40, 21, 10}; // Sorted in descending order
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int key = 40;
+
+    int result = binarySearchDescending(arr, 0, n - 1, key);
+
+    if (result != -1) {
+        printf("Element %d found at index %d.\n", key, result);
+    } else {
+        printf("Element %d not found.\n", key);
+    }
+
+    return 0;
+}

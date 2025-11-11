@@ -1,0 +1,115 @@
+//question 2b
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 50 // Define a maximum size for the queue
+
+// Global declaration for the queue and its pointers
+char Queue[MAX_SIZE];
+int front;
+int rear;
+
+// Function to check if the queue is full (for a linear queue)
+int isFull() {
+    if (rear == MAX_SIZE - 1) {
+        return 1;
+    }
+    return 0;
+}
+
+// Function to check if the queue is empty
+int isEmpty() {
+    // In this 1-based linear queue, empty is when front moves past rear
+    if (front > rear) {
+        return 1;
+    }
+    return 0;
+}
+
+// Function to insert (enqueue) an element
+void enqueue(char item) {
+    if (isFull()) {
+        printf("  Error: Queue Overflow! Cannot insert %c.\n", item);
+        return;
+    }
+    
+    // Increment rear and add the item
+    rear = rear + 1;
+    Queue[rear] = item;
+    printf("  Enqueued: %c\n", item);
+}
+
+// Function to delete (dequeue) an element
+char dequeue() {
+    if (isEmpty()) {
+        printf("  Error: Queue Underflow! Cannot delete.\n");
+        // Reset pointers if queue is truly empty to save space (optional)
+        front = 1;
+        rear = 0;
+        return '\0'; // Return null character on failure
+    }
+    
+    // Get the item from the front and increment front pointer
+    char item = Queue[front];
+    front = front + 1;
+    printf("  Dequeued: %c\n", item);
+    return item;
+}
+
+// Function to display the current state of the queue
+void display() {
+    printf("  Current Queue: ");
+    if (isEmpty()) {
+        printf("[Empty]\n");
+    } else {
+        // Loop from front index to rear index
+        for (int i = front; i <= rear; i++) {
+            printf("%c ", Queue[i]);
+        }
+        printf("\n");
+    }
+    printf("  Front index: %d\n", front);
+    printf("  Rear index:  %d\n", rear);
+    printf("----------------------------------\n");
+}
+
+// Main driver function to simulate the exam question
+int main() {
+    // 1. Set up the initial state as per the question
+    // Using 1-based indexing, so we start from index 1
+    front = 1;
+    rear = 5;
+    Queue[1] = 'B';
+    Queue[2] = 'M';
+    Queue[3] = 'S';
+    Queue[4] = 'C';
+    Queue[5] = 'E';
+
+    printf("Initial State:\n");
+    display();
+
+    // i) insert ('A')
+    printf("Operation (i): insert('A')\n");
+    enqueue('A');
+    display();
+
+    // ii) delete two letters
+    printf("Operation (ii): delete two letters\n");
+    dequeue(); // Deletes 'B'
+    dequeue(); // Deletes 'M'
+    display();
+
+    // iii) insert ('D')
+    printf("Operation (iii): insert('D')\n");
+    enqueue('D');
+    display();
+
+    // iv) insert ('T')
+    printf("Operation (iv): insert('T')\n");
+    enqueue('T');
+    display();
+
+    printf("Final State Reached.\n");
+
+    return 0;
+}

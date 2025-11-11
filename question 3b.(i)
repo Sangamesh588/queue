@@ -1,0 +1,21 @@
+//question 3b.(i)
+#include <stdio.h>
+
+// Corrected function as per the blanks in the question
+int gcd(int a, int b) {
+    if (a == b) {       // Blank 1
+        return a;       // Blank 2: Base case
+    }
+    
+    if (a > b) {
+        return gcd(a - b, b); // Recursive call
+    } else {
+        return gcd(a, b - a); // Blank 3: Recursive call
+    }
+}
+
+int main() {
+    int a = 56, b = 98;
+    printf("GCD of %d and %d is: %d\n", a, b, gcd(a, b)); // Output: 14
+    return 0;
+}

@@ -1,0 +1,96 @@
+//question 3c.(iv)
+#include <stdio.h>
+
+#define MAX_SIZE 100 // As specified: Queue[100]
+
+int Queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+
+// Function to check if the queue is full
+int isFull() {
+    if ((front == 0 && rear == MAX_SIZE - 1) || (front == rear + 1)) {
+        return 1;
+    }
+    return 0;
+}
+
+// Function to check if the queue is empty
+int isEmpty() {
+    if (front == -1) {
+        return 1;
+    }
+    return 0;
+}
+
+// iv) Routine for insert (enqueue) operation
+void enqueue(int value) {
+    if (isFull()) {
+        printf("Queue Overflow. Cannot insert %d.\n", value);
+        return;
+    }
+    
+    if (front == -1) { // If queue is initially empty
+        front = 0;
+    }
+    rear = (rear + 1) % MAX_SIZE; // Circular increment
+    Queue[rear] = value;
+    printf("%d enqueued to queue.\n", value);
+}
+
+// iv) Routine for remove (dequeue) operation
+int dequeue() {
+    int element;
+    if (isEmpty()) {
+        printf("Queue Underflow. Cannot dequeue.\n");
+        return -1;
+    }
+    
+    element = Queue[front];
+    if (front == rear) { // If only one element is in the queue
+        front = -1;
+        rear = -1;
+    } else {
+        front = (front + 1) % MAX_SIZE; // Circular increment
+    }
+    printf("%d dequeued from queue.\n", element);
+    return element;
+}
+
+// Helper function to display the queue
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    printf("Queue elements are: ");
+    int i = front;
+    if (front <= rear) {
+        while (i <= rear)
+            printf("%d ", Queue[i++]);
+    } else {
+        while (i <= MAX_SIZE - 1)
+            printf("%d ", Queue[i++]);
+        i = 0;
+        while (i <= rear)
+            printf("%d ", Queue[i++]);
+    }
+    printf("\n");
+}
+
+int main() {
+    // Note: Initialization is done by setting front = -1 and rear = -1 (globally)
+    
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    display();
+    
+    dequeue();
+    display();
+    
+    enqueue(40);
+    display();
+    
+    return 0;
+}

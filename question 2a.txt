@@ -1,0 +1,82 @@
+//question 2
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_SIZE 200
+
+// --- Stack Implementation ---
+char stack[MAX_SIZE];
+int top = -1;
+
+void push(char item) {
+    if (top < MAX_SIZE - 1) {
+        stack[++top] = item;
+    }
+}
+
+char pop() {
+    if (top >= 0) {
+        return stack[top--];
+    }
+    return '\0'; // Return null char for empty stack
+}
+// --- End Stack Implementation ---
+
+// Function to check for palindrome
+int isPalindrome(char* str) {
+    char cleaned_str[MAX_SIZE];
+    int j = 0;
+
+    // 1. Clean the string: remove spaces, punctuation, and convert to lowercase
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (isalnum(str[i])) {
+            cleaned_str[j++] = tolower(str[i]);
+        }
+    }
+    cleaned_str[j] = '\0'; // Null-terminate the cleaned string
+    
+    if (j == 0) return 1; // Empty string is a palindrome
+
+    // 2. Push all characters of the cleaned string onto the stack
+    for (int i = 0; cleaned_str[i] != '\0'; i++) {
+        push(cleaned_str[i]);
+    }
+
+    // 3. Pop from stack and compare with the cleaned string
+    for (int i = 0; cleaned_str[i] != '\0'; i++) {
+        char popped_char = pop();
+        if (cleaned_str[i] != popped_char) {
+            return 0; // Not a palindrome
+        }
+    }
+
+    return 1; // Is a palindrome
+}
+
+int main() {
+    char str1[] = "GiddeG";
+    char str2[] = "Madam, in Eden, I'm Adam.";
+    char str3[] = "Hello World";
+
+    if (isPalindrome(str1)) {
+        printf("\"%s\" is a palindrome.\n", str1);
+    } else {
+        printf("\"%s\" is NOT a palindrome.\n", str1);
+    }
+
+    if (isPalindrome(str2)) {
+        printf("\"%s\" is a palindrome.\n", str2);
+    } else {
+        printf("\"%s\" is NOT a palindrome.\n", str2);
+    }
+
+    if (isPalindrome(str3)) {
+        printf("\"%s\" is a palindrome.\n", str3);
+    } else {
+        printf("\"%s\" is NOT a palindrome.\n", str3);
+    }
+
+    return 0;
+}
